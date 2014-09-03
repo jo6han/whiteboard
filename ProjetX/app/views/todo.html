@@ -1,0 +1,110 @@
+		<h1>
+          <span class="label label-default" ng-show="showIncompleteCount()" style="float: right;">
+          {{ incompleteCount() }} things to do
+          </span>
+        </h1>
+          <!-- Button trigger modal -->
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" style="clear:both">
+          New POST IT
+          </button>
+      </div>
+
+    
+
+      <!-- ModalCREATE -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">Add new todo</h4>
+            </div>
+            <div class="modal-body">
+            <div class="input-group">
+              <form class="form">
+                <div class="form-group">
+                  <label>Title of post-it</label>
+                  <input class="form-control" placeholder="Title Here" ng-model="title"/>
+                </div>
+
+                <div class="form-group">
+                  <label>List of things to do</label>
+                  <input class="form-control" placeholder="Write like: (one, two, three)" ng-model="listInfo" ng-list required/>
+
+                  <div class="form-group">
+                  <label>Color of post-it</label><br>
+                  <!-- <input class="form-control" placeholder="red" ng-model="colorInfo"/> -->
+                  <input type="radio" name="color" value="red" ng-model="colorInfo">Red<br>
+                  <input type="radio" name="color" value="blue" ng-model="colorInfo">blue<br>
+                  <input type="radio" name="color" value="green" ng-model="colorInfo">green<br>
+                  <input type="radio" name="color" value="yellow" ng-model="colorInfo">yellow<br>
+                </div>
+                </div>
+              </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" ng-click="addItem(title, listInfo, colorInfo)" data-dismiss="modal">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+
+         <!-- ModalUPDATE -->
+        <div class="modal fade" id="myModalUpdate{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalUpdateLabel" aria-hidden="true" ng-repeat="item in items">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalUpdateLabel">Modal title</h4>
+              </div>
+              
+              <div class="modal-body">
+                  <div class="input-group">
+                <form class="form">
+                  <div class="form-group">
+                    <label>New Title of post-it</label>
+                    <input class="form-control" ng-model="item.description"/>
+                  </div>
+
+                  <div class="form-group">
+                    <label>New List of things to do</label>
+                    <input class="form-control" ng-model="item.list" ng-list required/>
+
+                    <div class="form-group">
+                    <label>Color of post-it</label><br>
+                    <input type="radio" name="color" value="red" ng-model="item.color">Red<br>
+                    <input type="radio" name="color" value="blue" ng-model="item.color">blue<br>
+                    <input type="radio" name="color" value="green" ng-model="item.color">green<br>
+                    <input type="radio" name="color" value="yellow" ng-model="item.color">yellow<br>
+                  </div>
+                  </div>
+                </form>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="updateItem(item.id,item.description, item.list, item.color)" data-dismiss="modal">UPDATE!!!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- MODAL END FOR UPDATE-->
+
+
+        </br>
+        <div class="custom" ng-repeat="item in items | filter:{done:false} | orderBy:'id'" ng-style={'background':item.color} my-draggable>
+
+          <button type="button" class="glyphicon glyphicon-pencil btn btn-primary" style="float: left;" data-toggle="modal" data-target="#myModalUpdate{{$index}}"></button>
+
+          <button type="button" class="glyphicon glyphicon-remove btn btn-primary" ng-click="removeItem(item.id, $index)" style="float: right;"></button>
+
+          <p class="customP"> {{ item.description }} </p>
+          </br>
+          <ul>
+            <li ng-repeat="itemss in item.list track by $index"> {{ itemss }} </li>
+          </ul>
+        </div>
+        <div style="clear:both;"></div>
